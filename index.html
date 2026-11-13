@@ -352,6 +352,113 @@
       text-align: center;
     }
 
+    .phone-catalog {
+      margin-top: 28px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: 0 8px 26px rgba(26, 48, 91, .05);
+    }
+
+    .phone-catalog[hidden], .phone-product[hidden] { display: none; }
+
+    .phone-catalog-heading { margin-bottom: 18px; }
+
+    .phone-catalog-heading h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 190px));
+      gap: 14px;
+    }
+
+    .brand-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+
+    .brand-card:hover, .brand-card:focus-visible {
+      transform: translateY(-2px);
+      border-color: #b9c9f5;
+      box-shadow: 0 8px 20px rgba(26, 48, 91, .08);
+    }
+
+    .brand-logo {
+      display: block;
+      width: 100%;
+      height: 82px;
+      margin-bottom: 9px;
+      border-radius: 9px;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .brand-name { font-size: 14px; font-weight: 750; }
+
+    .phone-product {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1fr);
+      align-items: center;
+      gap: 26px;
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 16px;
+      background: #f7f9fd;
+    }
+
+    .phone-product-image {
+      display: block;
+      width: 100%;
+      height: 300px;
+      border-radius: 13px;
+      background: #fff;
+      object-fit: contain;
+    }
+
+    .phone-product-details h3 {
+      margin-bottom: 8px;
+      font-size: 23px;
+    }
+
+    .phone-product-details > p:not(.eyebrow) {
+      margin-bottom: 17px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .phone-specs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .phone-specs li {
+      display: grid;
+      gap: 4px;
+      padding: 14px;
+      border: 1px solid #e1e7f2;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .phone-specs strong { color: var(--blue); font-size: 14px; }
+    .phone-specs span { color: var(--muted); font-size: 12px; }
+
     .hero {
       position: relative;
       margin-top: 38px;
@@ -466,6 +573,10 @@
       .section-note { font-size: 12px; }
       .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
       .category-card { min-height: 143px; padding: 15px 13px; }
+      .phone-catalog { margin-top: 22px; padding: 17px; }
+      .phone-product { grid-template-columns: 1fr; gap: 16px; padding: 13px; }
+      .phone-product-image { height: 220px; }
+      .phone-specs { grid-template-columns: 1fr; }
       .hero { margin-top: 27px; border-radius: 19px; }
       .hero-copy { left: 4%; width: 43%; }
       .hero .eyebrow { margin-bottom: 4px; font-size: 8px; }
@@ -540,7 +651,7 @@
       </div>
 
       <div class="category-grid" id="category-grid">
-        <a class="category-card" href="#featured" data-search="mobile phones smartphones devices">
+        <a class="category-card" href="#phone-catalog" data-search="mobile phones smartphones devices infinix">
           <img class="category-product-image" src="assets/mobile-phones.jpg" alt="A selection of smartphones">
           <h2>Mobile Phones</h2>
           <p>Find your next upgrade</p>
@@ -572,6 +683,31 @@
         </a>
       </div>
       <p class="no-results" id="no-results" role="status">No categories found. Try searching for phones, audio, chargers or repairs.</p>
+    </section>
+
+    <section class="phone-catalog" id="phone-catalog" aria-labelledby="phone-catalog-title" hidden>
+      <div class="phone-catalog-heading">
+        <p class="eyebrow">Mobile phones</p>
+        <h2 id="phone-catalog-title">Choose a phone brand</h2>
+      </div>
+      <div class="brand-grid">
+        <button class="brand-card" id="infinix-brand" type="button" aria-controls="infinix-products">
+          <img class="brand-logo" src="assets/infinix-logo.jpg" alt="Infinix logo">
+          <span class="brand-name">Infinix</span>
+        </button>
+      </div>
+      <section class="phone-product" id="infinix-products" aria-labelledby="infinix-product-title" hidden>
+        <img class="phone-product-image" src="assets/infinix-phone.webp" alt="Orange Infinix smartphone, front and back">
+        <div class="phone-product-details">
+          <p class="eyebrow">Infinix</p>
+          <h3 id="infinix-product-title">Infinix Smartphone</h3>
+          <p>Available memory and storage options</p>
+          <ul class="phone-specs">
+            <li><strong>8 GB RAM</strong><span>64 GB Storage</span></li>
+            <li><strong>8 GB RAM</strong><span>128 GB Storage</span></li>
+          </ul>
+        </div>
+      </section>
     </section>
 
     <section class="hero" id="featured">
@@ -607,6 +743,9 @@
     const searchInput = document.getElementById("category-search");
     const categoryCards = Array.from(document.querySelectorAll(".category-card"));
     const noResults = document.getElementById("no-results");
+    const phoneCatalog = document.getElementById("phone-catalog");
+    const phoneProduct = document.getElementById("infinix-products");
+    const infinixBrand = document.getElementById("infinix-brand");
     const carousel = document.querySelector(".promo-carousel");
     const promoSlides = Array.from(carousel.querySelectorAll(".promo-slide"));
     const promoIndicators = Array.from(carousel.querySelectorAll(".promo-indicator"));
@@ -616,8 +755,15 @@
     let hasFocus = false;
     let autoplayTimer;
 
+    function normalizeSearch(value) {
+      return value.toLowerCase().replace(/[^a-z0-9]/g, "");
+    }
+
     function filterCategories() {
       const query = searchInput.value.trim().toLowerCase();
+      const normalizedQuery = normalizeSearch(query);
+      const phoneSearchText = normalizeSearch("Infinix mobile phone smartphone 8 GB RAM 64 GB Storage 8 GB RAM 128 GB Storage");
+      const phoneMatches = normalizedQuery.length > 0 && phoneSearchText.includes(normalizedQuery);
       let visibleCount = 0;
 
       categoryCards.forEach((card) => {
@@ -626,15 +772,32 @@
         if (matches) visibleCount += 1;
       });
 
-      noResults.style.display = visibleCount ? "none" : "block";
+      phoneCatalog.hidden = !phoneMatches;
+      phoneProduct.hidden = !phoneMatches;
+      noResults.style.display = visibleCount || phoneMatches ? "none" : "block";
     }
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       filterCategories();
+      if (!phoneCatalog.hidden) phoneCatalog.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     searchInput.addEventListener("input", filterCategories);
+
+    categoryCards[0].addEventListener("click", (event) => {
+      event.preventDefault();
+      searchInput.value = "";
+      filterCategories();
+      phoneCatalog.hidden = false;
+      phoneProduct.hidden = true;
+      phoneCatalog.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    infinixBrand.addEventListener("click", () => {
+      phoneProduct.hidden = false;
+      phoneProduct.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
 
     function showPromo(index) {
       activePromo = (index + promoSlides.length) % promoSlides.length;
