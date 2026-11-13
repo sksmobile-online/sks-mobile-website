@@ -651,7 +651,7 @@
       </div>
 
       <div class="category-grid" id="category-grid">
-        <a class="category-card" href="#phone-catalog" data-search="mobile phones smartphones devices infinix">
+        <a class="category-card" href="#phone-catalog" data-search="mobile phones smartphones devices infinix kxd">
           <img class="category-product-image" src="assets/mobile-phones.jpg" alt="A selection of smartphones">
           <h2>Mobile Phones</h2>
           <p>Find your next upgrade</p>
@@ -691,12 +691,16 @@
         <h2 id="phone-catalog-title">Choose a phone brand</h2>
       </div>
       <div class="brand-grid">
-        <button class="brand-card" id="infinix-brand" type="button" aria-controls="infinix-products">
+        <button class="brand-card" type="button" data-brand="infinix" aria-controls="infinix-products">
           <img class="brand-logo" src="assets/infinix-logo.jpg" alt="Infinix logo">
           <span class="brand-name">Infinix</span>
         </button>
+        <button class="brand-card" type="button" data-brand="kxd" aria-controls="kxd-products">
+          <img class="brand-logo" src="assets/kxd-logo.jpg" alt="KXD logo">
+          <span class="brand-name">KXD</span>
+        </button>
       </div>
-      <section class="phone-product" id="infinix-products" aria-labelledby="infinix-product-title" hidden>
+      <section class="phone-product" id="infinix-products" data-search="infinix mobile phone smartphone 8gb ram 64gb storage 128gb" aria-labelledby="infinix-product-title" hidden>
         <img class="phone-product-image" src="assets/infinix-phone.webp" alt="Orange Infinix smartphone, front and back">
         <div class="phone-product-details">
           <p class="eyebrow">Infinix</p>
@@ -705,6 +709,17 @@
           <ul class="phone-specs">
             <li><strong>8 GB RAM</strong><span>64 GB Storage</span></li>
             <li><strong>8 GB RAM</strong><span>128 GB Storage</span></li>
+          </ul>
+        </div>
+      </section>
+      <section class="phone-product" id="kxd-products" data-search="kxd mobile phone smartphone 3gb ram 32gb storage" aria-labelledby="kxd-product-title" hidden>
+        <img class="phone-product-image" src="assets/kxd-phone.jpg" alt="Orange KXD smartphone, front and back">
+        <div class="phone-product-details">
+          <p class="eyebrow">KXD</p>
+          <h3 id="kxd-product-title">KXD Smartphone</h3>
+          <p>Available memory and storage options</p>
+          <ul class="phone-specs">
+            <li><strong>3 GB RAM</strong><span>32 GB Storage</span></li>
           </ul>
         </div>
       </section>
@@ -744,8 +759,8 @@
     const categoryCards = Array.from(document.querySelectorAll(".category-card"));
     const noResults = document.getElementById("no-results");
     const phoneCatalog = document.getElementById("phone-catalog");
-    const phoneProduct = document.getElementById("infinix-products");
-    const infinixBrand = document.getElementById("infinix-brand");
+    const phoneProducts = Array.from(document.querySelectorAll(".phone-product"));
+    const brandCards = Array.from(document.querySelectorAll(".brand-card"));
     const carousel = document.querySelector(".promo-carousel");
     const promoSlides = Array.from(carousel.querySelectorAll(".promo-slide"));
     const promoIndicators = Array.from(carousel.querySelectorAll(".promo-indicator"));
@@ -762,8 +777,11 @@
     function filterCategories() {
       const query = searchInput.value.trim().toLowerCase();
       const normalizedQuery = normalizeSearch(query);
-      const phoneSearchText = normalizeSearch("Infinix mobile phone smartphone 8 GB RAM 64 GB Storage 8 GB RAM 128 GB Storage");
-      const phoneMatches = normalizedQuery.length > 0 && phoneSearchText.includes(normalizedQuery);
+      const matchingProducts = normalizedQuery
+        ? phoneProducts.filter((product) => normalizeSearch(product.dataset.search + " " + product.textContent).includes(normalizedQuery))
+        : [];
+      const matchingBrands = brandCards.filter((brand) => normalizeSearch(brand.textContent).includes(normalizedQuery));
+      const isBrandSearch = normalizedQuery.length >= 3 && matchingBrands.length === 1;
       let visibleCount = 0;
 
       categoryCards.forEach((card) => {
@@ -772,9 +790,15 @@
         if (matches) visibleCount += 1;
       });
 
-      phoneCatalog.hidden = !phoneMatches;
-      phoneProduct.hidden = !phoneMatches;
-      noResults.style.display = visibleCount || phoneMatches ? "none" : "block";
+      brandCards.forEach((brand) => {
+        brand.hidden = isBrandSearch && brand !== matchingBrands[0];
+      });
+      phoneProducts.forEach((product) => {
+        product.hidden = !matchingProducts.includes(product);
+      });
+
+      phoneCatalog.hidden = matchingProducts.length === 0;
+      noResults.style.display = visibleCount || matchingProducts.length ? "none" : "block";
     }
 
     form.addEventListener("submit", (event) => {
@@ -790,13 +814,20 @@
       searchInput.value = "";
       filterCategories();
       phoneCatalog.hidden = false;
-      phoneProduct.hidden = true;
+      phoneProducts.forEach((product) => {
+        product.hidden = true;
+      });
       phoneCatalog.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    infinixBrand.addEventListener("click", () => {
-      phoneProduct.hidden = false;
-      phoneProduct.scrollIntoView({ behavior: "smooth", block: "start" });
+    brandCards.forEach((brand) => {
+      brand.addEventListener("click", () => {
+        const selectedProduct = document.getElementById(`${brand.dataset.brand}-products`);
+        phoneProducts.forEach((product) => {
+          product.hidden = product !== selectedProduct;
+        });
+        selectedProduct.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
     });
 
     function showPromo(index) {
