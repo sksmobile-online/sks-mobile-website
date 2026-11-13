@@ -354,32 +354,34 @@
 
     .hero {
       position: relative;
-      display: flex;
-      min-height: 294px;
-      align-items: center;
-      justify-content: space-between;
-      gap: 28px;
       margin-top: 38px;
-      padding: 42px 58px;
       overflow: hidden;
       border-radius: 24px;
-      background:
-        radial-gradient(circle at 82% 50%, rgba(87, 136, 255, .36), transparent 26%),
-        linear-gradient(112deg, #10275f 0%, #1748b9 61%, #2866e8 100%);
-      color: #fff;
+      background: #eaf6fc;
+    }
+
+    .hero-image {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
     .hero-copy {
-      position: relative;
+      position: absolute;
+      top: 50%;
+      left: 5%;
       z-index: 1;
-      max-width: 540px;
+      width: 39%;
+      max-width: 430px;
+      transform: translateY(-50%);
     }
 
-    .hero .eyebrow { color: #b9d1ff; }
+    .hero .eyebrow { color: #0874b9; }
 
     .hero h2 {
       max-width: 470px;
       margin-bottom: 12px;
+      color: #10275f;
       font-size: clamp(27px, 4vw, 40px);
       letter-spacing: -.045em;
       line-height: 1.12;
@@ -388,7 +390,7 @@
     .hero-copy > p:not(.eyebrow) {
       max-width: 430px;
       margin-bottom: 23px;
-      color: #d7e3ff;
+      color: #34445f;
       font-size: 14px;
       line-height: 1.65;
     }
@@ -399,45 +401,13 @@
       gap: 10px;
       padding: 12px 17px;
       border-radius: 11px;
-      background: #fff;
-      color: #163d9e;
+      background: #1748d1;
+      color: #fff;
       font-size: 13px;
       font-weight: 750;
     }
 
-    .hero-button:hover { background: #edf3ff; }
-
-    .hero-art {
-      position: relative;
-      display: grid;
-      width: 205px;
-      height: 205px;
-      flex: 0 0 auto;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, .23);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .1);
-      box-shadow: 0 0 0 18px rgba(255, 255, 255, .045), 0 0 60px rgba(153, 191, 255, .28);
-      font-size: 105px;
-      transform: rotate(-8deg);
-    }
-
-    .hero-art::after {
-      position: absolute;
-      right: -17px;
-      bottom: 24px;
-      width: 58px;
-      height: 58px;
-      border: 1px solid rgba(255, 255, 255, .35);
-      border-radius: 18px;
-      background: #f9fbff;
-      content: "✦";
-      color: #2351bd;
-      display: grid;
-      place-items: center;
-      font-size: 28px;
-      transform: rotate(12deg);
-    }
+    .hero-button:hover { background: #10369f; }
 
     .benefits {
       display: grid;
@@ -496,19 +466,17 @@
       .section-note { font-size: 12px; }
       .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
       .category-card { min-height: 143px; padding: 15px 13px; }
-      .hero { min-height: 0; margin-top: 27px; padding: 29px 23px; border-radius: 19px; }
-      .hero-art { width: 90px; height: 90px; margin-right: 4px; font-size: 48px; }
-      .hero-art::after { right: -13px; bottom: 1px; width: 38px; height: 38px; border-radius: 12px; font-size: 19px; }
-      .hero h2 { font-size: 27px; }
-      .hero-copy > p:not(.eyebrow) { font-size: 12px; }
+      .hero { margin-top: 27px; border-radius: 19px; }
+      .hero-copy { left: 4%; width: 43%; }
+      .hero .eyebrow { margin-bottom: 4px; font-size: 8px; }
+      .hero h2 { margin-bottom: 6px; font-size: clamp(16px, 5vw, 25px); }
+      .hero-copy > p:not(.eyebrow) { margin-bottom: 9px; font-size: 10px; line-height: 1.4; }
+      .hero-button { gap: 5px; padding: 7px 9px; border-radius: 8px; font-size: 9px; }
       .benefits { grid-template-columns: 1fr; gap: 9px; margin-top: 15px; }
     }
 
     @media (max-width: 390px) {
-      .hero { align-items: flex-start; }
-      .hero-art { position: absolute; right: 12px; bottom: 22px; width: 67px; height: 67px; font-size: 37px; opacity: .8; }
-      .hero-copy { max-width: 100%; }
-      .hero-copy > p:not(.eyebrow) { max-width: 220px; }
+      .hero-copy > p:not(.eyebrow) { max-width: 100%; font-size: 9px; }
     }
   </style>
 </head>
@@ -607,13 +575,13 @@
     </section>
 
     <section class="hero" id="featured">
+      <img class="hero-image" src="assets/repair-services-banner.jpg" alt="Mobile phone parts and devices ready for repair">
       <div class="hero-copy">
         <p class="eyebrow">Made for your everyday</p>
         <h2>Good tech. Great days.</h2>
         <p>From the phone in your pocket to the little things that make it yours, discover tech that keeps up with you.</p>
         <a class="hero-button" href="#categories">Explore all categories <span aria-hidden="true">→</span></a>
       </div>
-      <div class="hero-art" aria-hidden="true">📱</div>
     </section>
 
     <section class="benefits" id="why-sks" aria-label="Why shop with SKS Mobile">
