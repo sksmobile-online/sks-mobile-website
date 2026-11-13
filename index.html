@@ -320,6 +320,16 @@
       font-size: 24px;
     }
 
+    .category-product-image {
+      display: block;
+      width: 100%;
+      height: 104px;
+      margin-bottom: 12px;
+      border-radius: 11px;
+      background: #f0f3f8;
+      object-fit: cover;
+    }
+
     .category-card h2 {
       margin: 0 0 5px;
       font-size: 13px;
@@ -563,17 +573,17 @@
 
       <div class="category-grid" id="category-grid">
         <a class="category-card" href="#featured" data-search="mobile phones smartphones devices">
-          <span class="category-icon" aria-hidden="true">📱</span>
+          <img class="category-product-image" src="assets/mobile-phones.jpg" alt="A selection of smartphones">
           <h2>Mobile Phones</h2>
           <p>Find your next upgrade</p>
         </a>
         <a class="category-card" href="#featured" data-search="cases covers screen protectors">
-          <span class="category-icon" aria-hidden="true">🛡️</span>
+          <img class="category-product-image" src="assets/phone-cases.jpg" alt="Colorful phone cases">
           <h2>Cases &amp; Covers</h2>
           <p>Style meets protection</p>
         </a>
         <a class="category-card" href="#featured" data-search="chargers cables power banks">
-          <span class="category-icon" aria-hidden="true">🔋</span>
+          <img class="category-product-image" src="assets/chargers.jpg" alt="Phone charger and cable">
           <h2>Chargers &amp; Power</h2>
           <p>Stay powered all day</p>
         </a>
