@@ -921,12 +921,12 @@
           <img class="brand-logo" src="assets/kxd-logo.jpg" alt="KXD logo">
           <span class="brand-name">KXD</span>
         </button>
-        <button class="brand-card" type="button" data-brand="zte" aria-controls="zte-products">
+        <button class="brand-card" type="button" data-brand="zte" aria-controls="zte-products zte-products-6-64">
           <img class="brand-logo" src="assets/zte-logo.jpg" alt="ZTE logo">
           <span class="brand-name">ZTE</span>
         </button>
       </div>
-      <section class="phone-product" id="infinix-products" data-search="infinix smart 20 mobile phone smartphone 8gb ram 64gb storage 128gb 52500 62000" aria-labelledby="infinix-product-title" hidden>
+      <section class="phone-product" id="infinix-products" data-brand="infinix" data-search="infinix smart 20 mobile phone smartphone 8gb ram 64gb storage 128gb 52500 62000" aria-labelledby="infinix-product-title" hidden>
         <img class="phone-product-image" src="assets/infinix-phone.webp" alt="Orange Infinix smartphone, front and back">
         <div class="phone-product-details">
           <p class="eyebrow">Infinix</p>
@@ -946,7 +946,7 @@
           </ul>
         </div>
       </section>
-      <section class="phone-product" id="kxd-products" data-search="kxd a07 mobile phone smartphone 3gb ram 32gb storage 33000" aria-labelledby="kxd-product-title" hidden>
+      <section class="phone-product" id="kxd-products" data-brand="kxd" data-search="kxd a07 mobile phone smartphone 3gb ram 32gb storage 33000" aria-labelledby="kxd-product-title" hidden>
         <img class="phone-product-image" src="assets/kxd-phone.jpg" alt="Orange KXD smartphone, front and back">
         <div class="phone-product-details">
           <p class="eyebrow">KXD</p>
@@ -961,7 +961,7 @@
           </ul>
         </div>
       </section>
-      <section class="phone-product" id="zte-products" data-search="zte mobile phone smartphone 12gb ram 128gb storage 51000" aria-labelledby="zte-product-title" hidden>
+      <section class="phone-product" id="zte-products" data-brand="zte" data-search="zte mobile phone smartphone 12gb ram 128gb storage 51000" aria-labelledby="zte-product-title" hidden>
         <img class="phone-product-image" src="assets/zte-phone.jpg" alt="Black ZTE smartphone, front and back">
         <div class="phone-product-details">
           <p class="eyebrow">ZTE</p>
@@ -972,6 +972,21 @@
               <strong>12 GB RAM</strong><span>128 GB Storage</span>
               <span class="phone-price">LKR 51,000.00</span>
               <button class="add-to-cart" type="button" data-product-id="zte-smartphone-12-128" data-product-name="ZTE Smartphone" data-product-variant="12 GB RAM / 128 GB Storage" data-price="51000">Add to cart</button>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="phone-product" id="zte-products-6-64" data-brand="zte" data-search="zte mobile phone smartphone 6gb ram 64gb storage 38000" aria-labelledby="zte-product-6-64-title" hidden>
+        <img class="phone-product-image" src="assets/zte-phone-6-64.jpg" alt="Pink ZTE smartphone, front and back">
+        <div class="phone-product-details">
+          <p class="eyebrow">ZTE</p>
+          <h3 id="zte-product-6-64-title">ZTE Smartphone</h3>
+          <p>Available memory and storage option</p>
+          <ul class="phone-specs">
+            <li>
+              <strong>6 GB RAM</strong><span>64 GB Storage</span>
+              <span class="phone-price">LKR 38,000.00</span>
+              <button class="add-to-cart" type="button" data-product-id="zte-smartphone-6-64" data-product-name="ZTE Smartphone" data-product-variant="6 GB RAM / 64 GB Storage" data-price="38000">Add to cart</button>
             </li>
           </ul>
         </div>
@@ -1318,11 +1333,13 @@
 
     brandCards.forEach((brand) => {
       brand.addEventListener("click", () => {
-        const selectedProduct = document.getElementById(`${brand.dataset.brand}-products`);
+        const selectedProducts = phoneProducts.filter((product) => product.dataset.brand === brand.dataset.brand);
         phoneProducts.forEach((product) => {
-          product.hidden = product !== selectedProduct;
+          product.hidden = !selectedProducts.includes(product);
         });
-        selectedProduct.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (selectedProducts.length) {
+          selectedProducts[0].scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       });
     });
 
