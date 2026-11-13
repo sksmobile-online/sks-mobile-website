@@ -113,6 +113,25 @@
       color: var(--blue) !important;
     }
 
+    .cart-toggle {
+      border: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .cart-toggle:hover { background: #e2eaff; }
+
+    .cart-count {
+      display: inline-grid;
+      min-width: 20px;
+      height: 20px;
+      margin-left: 3px;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 11px;
+    }
+
     .search-area {
       padding: 18px 0 20px;
       background: var(--surface);
@@ -459,6 +478,164 @@
     .phone-specs strong { color: var(--blue); font-size: 14px; }
     .phone-specs span { color: var(--muted); font-size: 12px; }
 
+    .add-to-cart,
+    .checkout-submit,
+    .order-send-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 9px 13px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--blue);
+      color: #fff;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .add-to-cart:hover,
+    .checkout-submit:hover,
+    .order-send-link:hover { background: var(--blue-dark); }
+
+    .shopping-cart {
+      margin-top: 26px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: 0 8px 26px rgba(26, 48, 91, .05);
+    }
+
+    .shopping-cart[hidden],
+    .checkout-form[hidden],
+    .order-actions[hidden] { display: none; }
+
+    .cart-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .cart-heading h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .cart-heading .eyebrow { margin-bottom: 5px; }
+
+    .cart-clear,
+    .cart-action {
+      min-width: 36px;
+      min-height: 36px;
+      padding: 7px 10px;
+      border: 1px solid #dfe5f0;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .cart-clear:hover,
+    .cart-action:hover { border-color: #b9c9f5; background: #f7f9ff; }
+
+    .cart-empty {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .cart-items {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .cart-item-name { display: block; margin-bottom: 4px; font-size: 13px; }
+    .cart-item-variant { margin: 0; color: var(--muted); font-size: 12px; }
+    .cart-item-actions { display: flex; align-items: center; gap: 7px; }
+    .cart-item-quantity { min-width: 52px; text-align: center; font-size: 12px; }
+    .cart-remove { color: #a52c3b; }
+
+    .checkout-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .checkout-form h3,
+    .checkout-note,
+    .checkout-submit { grid-column: 1 / -1; }
+
+    .checkout-form h3 { margin: 0; font-size: 17px; }
+
+    .checkout-field {
+      display: grid;
+      gap: 6px;
+      color: #46516b;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .checkout-field input,
+    .checkout-field textarea {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid #dfe5f0;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .checkout-field textarea { min-height: 88px; resize: vertical; }
+    .checkout-field input:focus, .checkout-field textarea:focus { outline: 2px solid #b9c9f5; }
+
+    .checkout-note,
+    .cart-status {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .order-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .order-actions p { flex: 1 0 100%; margin: 0; color: var(--muted); font-size: 13px; }
+    .order-send-link { text-decoration: none; }
+    .order-send-link.whatsapp { background: #138b4b; }
+    .order-send-link.whatsapp:hover { background: #0e713c; }
+    .cart-status { margin-top: 14px; }
+
     .hero {
       position: relative;
       margin-top: 38px;
@@ -577,6 +754,13 @@
       .phone-product { grid-template-columns: 1fr; gap: 16px; padding: 13px; }
       .phone-product-image { height: 220px; }
       .phone-specs { grid-template-columns: 1fr; }
+      .shopping-cart { margin-top: 22px; padding: 17px; }
+      .cart-item { grid-template-columns: 1fr; gap: 10px; }
+      .cart-item-actions { justify-content: flex-start; }
+      .checkout-form { grid-template-columns: 1fr; }
+      .checkout-form h3, .checkout-note, .checkout-submit { grid-column: auto; }
+      .order-actions { align-items: stretch; flex-direction: column; }
+      .order-send-link { width: 100%; }
       .hero { margin-top: 27px; border-radius: 19px; }
       .hero-copy { left: 4%; width: 43%; }
       .hero .eyebrow { margin-bottom: 4px; font-size: 8px; }
@@ -607,6 +791,9 @@
         <a href="#categories">Categories</a>
         <a href="#why-sks">Why SKS</a>
         <a class="shop-link" href="#categories">Explore the shop&nbsp; ↗</a>
+        <button class="shop-link cart-toggle" id="cart-toggle" type="button" aria-controls="shopping-cart" aria-expanded="false">
+          Cart <span class="cart-count" id="cart-count" aria-live="polite">0</span>
+        </button>
       </nav>
     </div>
   </header>
@@ -707,8 +894,14 @@
           <h3 id="infinix-product-title">Infinix Smart 20</h3>
           <p>Available memory and storage options</p>
           <ul class="phone-specs">
-            <li><strong>8 GB RAM</strong><span>64 GB Storage</span></li>
-            <li><strong>8 GB RAM</strong><span>128 GB Storage</span></li>
+            <li>
+              <strong>8 GB RAM</strong><span>64 GB Storage</span>
+              <button class="add-to-cart" type="button" data-product-id="infinix-smart-20-64" data-product-name="Infinix Smart 20" data-product-variant="8 GB RAM / 64 GB Storage">Add to cart</button>
+            </li>
+            <li>
+              <strong>8 GB RAM</strong><span>128 GB Storage</span>
+              <button class="add-to-cart" type="button" data-product-id="infinix-smart-20-128" data-product-name="Infinix Smart 20" data-product-variant="8 GB RAM / 128 GB Storage">Add to cart</button>
+            </li>
           </ul>
         </div>
       </section>
@@ -719,10 +912,48 @@
           <h3 id="kxd-product-title">KXD A07</h3>
           <p>Available memory and storage options</p>
           <ul class="phone-specs">
-            <li><strong>3 GB RAM</strong><span>32 GB Storage</span></li>
+            <li>
+              <strong>3 GB RAM</strong><span>32 GB Storage</span>
+              <button class="add-to-cart" type="button" data-product-id="kxd-a07-32" data-product-name="KXD A07" data-product-variant="3 GB RAM / 32 GB Storage">Add to cart</button>
+            </li>
           </ul>
         </div>
       </section>
+    </section>
+
+    <section class="shopping-cart" id="shopping-cart" aria-labelledby="shopping-cart-title" hidden>
+      <div class="cart-heading">
+        <div>
+          <p class="eyebrow">SKS Mobile</p>
+          <h2 id="shopping-cart-title">Your cart</h2>
+        </div>
+        <button class="cart-clear" id="cart-clear" type="button" hidden>Clear cart</button>
+      </div>
+      <p class="cart-empty" id="cart-empty">Your cart is empty. Add a phone to start an order.</p>
+      <ul class="cart-items" id="cart-items" aria-live="polite"></ul>
+      <form class="checkout-form" id="checkout-form" hidden>
+        <h3>Delivery details</h3>
+        <label class="checkout-field">
+          Full name
+          <input name="customerName" type="text" autocomplete="name" required>
+        </label>
+        <label class="checkout-field">
+          Phone number
+          <input name="customerPhone" type="tel" autocomplete="tel" required>
+        </label>
+        <label class="checkout-field">
+          Delivery address
+          <textarea name="customerAddress" autocomplete="street-address" required></textarea>
+        </label>
+        <p class="checkout-note">Prices will be confirmed by SKS Mobile. Your details are only shared when you choose to send the order message.</p>
+        <button class="checkout-submit" type="submit">Continue to send order</button>
+      </form>
+      <div class="order-actions" id="order-actions" hidden>
+        <p id="order-status" role="status" aria-live="polite">Order message ready. Send it by email and WhatsApp to notify us on both.</p>
+        <a class="order-send-link" id="email-order-link">Send order by email</a>
+        <a class="order-send-link whatsapp" id="whatsapp-order-link" target="_blank" rel="noopener noreferrer">Send order by WhatsApp</a>
+      </div>
+      <p class="cart-status" id="cart-status" role="status" aria-live="polite"></p>
     </section>
 
     <section class="hero" id="featured">
@@ -761,6 +992,18 @@
     const phoneCatalog = document.getElementById("phone-catalog");
     const phoneProducts = Array.from(document.querySelectorAll(".phone-product"));
     const brandCards = Array.from(document.querySelectorAll(".brand-card"));
+    const cartToggle = document.getElementById("cart-toggle");
+    const cartCount = document.getElementById("cart-count");
+    const shoppingCart = document.getElementById("shopping-cart");
+    const cartItemsList = document.getElementById("cart-items");
+    const cartEmpty = document.getElementById("cart-empty");
+    const cartClear = document.getElementById("cart-clear");
+    const checkoutForm = document.getElementById("checkout-form");
+    const orderActions = document.getElementById("order-actions");
+    const emailOrderLink = document.getElementById("email-order-link");
+    const whatsappOrderLink = document.getElementById("whatsapp-order-link");
+    const cartStatus = document.getElementById("cart-status");
+    const cartItems = [];
     const carousel = document.querySelector(".promo-carousel");
     const promoSlides = Array.from(carousel.querySelectorAll(".promo-slide"));
     const promoIndicators = Array.from(carousel.querySelectorAll(".promo-indicator"));
@@ -769,6 +1012,60 @@
     let isHovered = false;
     let hasFocus = false;
     let autoplayTimer;
+
+    function renderCart() {
+      const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+      const isEmpty = cartItems.length === 0;
+      cartCount.textContent = String(itemCount);
+      cartToggle.setAttribute("aria-label", `Open cart, ${itemCount} ${itemCount === 1 ? "item" : "items"}`);
+      cartItemsList.replaceChildren();
+      cartItemsList.hidden = isEmpty;
+      cartEmpty.hidden = !isEmpty;
+      cartClear.hidden = isEmpty;
+      checkoutForm.hidden = isEmpty;
+
+      cartItems.forEach((item) => {
+        const row = document.createElement("li");
+        row.className = "cart-item";
+        const details = document.createElement("div");
+        const name = document.createElement("strong");
+        name.className = "cart-item-name";
+        name.textContent = item.name;
+        const variant = document.createElement("p");
+        variant.className = "cart-item-variant";
+        variant.textContent = item.variant;
+        details.append(name, variant);
+
+        const actions = document.createElement("div");
+        actions.className = "cart-item-actions";
+        const decrease = document.createElement("button");
+        decrease.className = "cart-action";
+        decrease.type = "button";
+        decrease.dataset.cartAction = "decrease";
+        decrease.dataset.itemId = item.id;
+        decrease.setAttribute("aria-label", `Remove one ${item.name} from cart`);
+        decrease.textContent = "−";
+        const quantity = document.createElement("span");
+        quantity.className = "cart-item-quantity";
+        quantity.textContent = `Qty ${item.quantity}`;
+        const increase = document.createElement("button");
+        increase.className = "cart-action";
+        increase.type = "button";
+        increase.dataset.cartAction = "increase";
+        increase.dataset.itemId = item.id;
+        increase.setAttribute("aria-label", `Add one ${item.name} to cart`);
+        increase.textContent = "+";
+        const remove = document.createElement("button");
+        remove.className = "cart-action cart-remove";
+        remove.type = "button";
+        remove.dataset.cartAction = "remove";
+        remove.dataset.itemId = item.id;
+        remove.textContent = "Remove";
+        actions.append(decrease, quantity, increase, remove);
+        row.append(details, actions);
+        cartItemsList.append(row);
+      });
+    }
 
     function normalizeSearch(value) {
       return value.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -808,6 +1105,107 @@
     });
 
     searchInput.addEventListener("input", filterCategories);
+
+    cartToggle.addEventListener("click", () => {
+      shoppingCart.hidden = !shoppingCart.hidden;
+      cartToggle.setAttribute("aria-expanded", String(!shoppingCart.hidden));
+      if (!shoppingCart.hidden) {
+        renderCart();
+        shoppingCart.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    phoneCatalog.addEventListener("click", (event) => {
+      const button = event.target.closest(".add-to-cart");
+      if (!button) return;
+
+      const { productId, productName, productVariant } = button.dataset;
+      if (!productId || !productName || !productVariant) {
+        cartStatus.textContent = "This item could not be added. Please try again.";
+        return;
+      }
+
+      const existingItem = cartItems.find((item) => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cartItems.push({ id: productId, name: productName, variant: productVariant, quantity: 1 });
+      }
+
+      orderActions.hidden = true;
+      cartStatus.textContent = `${productName} added to your cart.`;
+      shoppingCart.hidden = false;
+      cartToggle.setAttribute("aria-expanded", "true");
+      renderCart();
+      shoppingCart.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    cartItemsList.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-cart-action]");
+      if (!button) return;
+
+      const itemIndex = cartItems.findIndex((item) => item.id === button.dataset.itemId);
+      if (itemIndex < 0) {
+        cartStatus.textContent = "That cart item could not be found. Please refresh the page.";
+        return;
+      }
+
+      const item = cartItems[itemIndex];
+      if (button.dataset.cartAction === "increase") {
+        item.quantity += 1;
+      } else if (button.dataset.cartAction === "decrease" && item.quantity > 1) {
+        item.quantity -= 1;
+      } else if (button.dataset.cartAction === "decrease" || button.dataset.cartAction === "remove") {
+        cartItems.splice(itemIndex, 1);
+      }
+
+      orderActions.hidden = true;
+      cartStatus.textContent = "Cart updated.";
+      renderCart();
+    });
+
+    cartClear.addEventListener("click", () => {
+      cartItems.length = 0;
+      orderActions.hidden = true;
+      cartStatus.textContent = "Cart cleared.";
+      renderCart();
+    });
+
+    checkoutForm.addEventListener("input", () => {
+      orderActions.hidden = true;
+    });
+
+    checkoutForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!cartItems.length) {
+        cartStatus.textContent = "Your cart is empty. Add a phone before placing an order.";
+        return;
+      }
+
+      const details = new FormData(checkoutForm);
+      const customerName = String(details.get("customerName") || "").trim();
+      const customerPhone = String(details.get("customerPhone") || "").trim();
+      const customerAddress = String(details.get("customerAddress") || "").trim();
+      const orderLines = cartItems.map((item) => `- ${item.name} (${item.variant}) x ${item.quantity}`);
+      const message = [
+        "New SKS Mobile order",
+        `Customer: ${customerName}`,
+        `Phone: ${customerPhone}`,
+        `Delivery address: ${customerAddress}`,
+        "",
+        "Items:",
+        ...orderLines,
+      ].join("\n");
+      const subject = `SKS Mobile order from ${customerName}`;
+
+      emailOrderLink.href = `mailto:lakshancreations26@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      whatsappOrderLink.href = `https://wa.me/94759734533?text=${encodeURIComponent(message)}`;
+      orderActions.hidden = false;
+      cartStatus.textContent = "Order details are ready. Choose both buttons to send the order by email and WhatsApp.";
+      orderActions.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    renderCart();
 
     categoryCards[0].addEventListener("click", (event) => {
       event.preventDefault();
