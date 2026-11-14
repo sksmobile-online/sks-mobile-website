@@ -362,6 +362,47 @@
       line-height: 1.4;
     }
 
+    .repair-display-section {
+      margin-top: 24px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: 0 8px 26px rgba(26, 48, 91, .05);
+    }
+
+    .repair-display-section[hidden] { display: none; }
+    .repair-display-heading { margin-bottom: 16px; }
+    .repair-display-heading h2 { margin: 0; font-size: 20px; }
+
+    .repair-display-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+      background: #f0f3f8;
+    }
+
+    .display-brand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+      gap: 12px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .display-brand-card {
+      padding: 14px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 750;
+      text-align: center;
+    }
+
     .no-results {
       display: none;
       padding: 24px;
@@ -991,12 +1032,33 @@
           <h2>Smart Watches</h2>
           <p>Keep your day in sync</p>
         </a>
-        <a class="category-card" href="#featured" data-search="repairs service support">
+        <a class="category-card" href="#repair-display-section" data-category="repairs-service" data-search="repairs service support display samsung xiaomi google pixel motorola redmi vivo oppo infinix oneplus huawei iphone itel">
           <img class="category-product-image" src="assets/repair-services.webp" alt="Repair services tools">
           <h2>Repairs &amp; Service</h2>
           <p>Expert help for your device</p>
         </a>
       </div>
+      <section class="repair-display-section" id="repair-display-section" aria-labelledby="repair-display-title" hidden>
+        <div class="repair-display-heading">
+          <p class="eyebrow">Repairs &amp; Service</p>
+          <h2 id="repair-display-title">DISPLY</h2>
+        </div>
+        <img class="repair-display-image" src="assets/repair-display-brands.jpg" alt="DISPLY phone screen replacement and repair">
+        <ul class="display-brand-grid" aria-label="Phone brands supported for display repairs">
+          <li class="display-brand-card">Samsung</li>
+          <li class="display-brand-card">Xiaomi</li>
+          <li class="display-brand-card">Google Pixel</li>
+          <li class="display-brand-card">Motorola</li>
+          <li class="display-brand-card">Redmi</li>
+          <li class="display-brand-card">Vivo</li>
+          <li class="display-brand-card">Oppo</li>
+          <li class="display-brand-card">Infinix</li>
+          <li class="display-brand-card">OnePlus</li>
+          <li class="display-brand-card">Huawei</li>
+          <li class="display-brand-card">iPhone</li>
+          <li class="display-brand-card">Itel</li>
+        </ul>
+      </section>
       <section class="charger-brand-section" id="charger-brands" aria-labelledby="charger-brand-title" hidden>
         <div class="charger-brand-heading">
           <p class="eyebrow">Chargers &amp; Power</p>
@@ -1306,7 +1368,10 @@
     const omsCategoryEmpty = document.getElementById("oms-category-empty");
     const omsBrandButton = chargerBrandSection.querySelector("[data-charger-brand=\"oms\"]");
     const chargerCategory = categoryCards.find((card) => card.dataset.category === "chargers-power");
+    const repairCategory = categoryCards.find((card) => card.dataset.category === "repairs-service");
+    const repairDisplaySection = document.getElementById("repair-display-section");
     let chargerBrandsOpened = false;
+    let repairDisplayOpened = false;
     const phoneCatalog = document.getElementById("phone-catalog");
     const phoneProducts = Array.from(phoneCatalog.querySelectorAll(".phone-product"));
     const brandCards = Array.from(document.querySelectorAll(".brand-card"));
@@ -1413,6 +1478,7 @@
       const matchingBrands = brandCards.filter((brand) => normalizeSearch(brand.textContent).includes(normalizedQuery));
       const matchingChargerBrands = chargerBrandCards.filter((brand) => normalizeSearch(brand.dataset.search + " " + brand.textContent).includes(normalizedQuery));
       const isChargerSearch = !normalizedQuery || normalizeSearch(chargerCategory.textContent + " " + chargerCategory.dataset.search).includes(normalizedQuery);
+      const isRepairSearch = normalizedQuery && normalizeSearch(repairCategory.textContent + " " + repairCategory.dataset.search + " " + repairDisplaySection.textContent).includes(normalizedQuery);
       const isBrandSearch = normalizedQuery.length >= 3 && matchingBrands.length === 1;
       let visibleCount = 0;
 
@@ -1424,6 +1490,7 @@
 
       const hasChargerSearch = normalizedQuery && (isChargerSearch || matchingChargerBrands.length > 0);
       chargerBrandSection.hidden = normalizedQuery ? !hasChargerSearch : !chargerBrandsOpened;
+      repairDisplaySection.hidden = normalizedQuery ? !isRepairSearch : !repairDisplayOpened;
       chargerBrandCards.forEach((brand) => {
         brand.hidden = Boolean(normalizedQuery) && matchingChargerBrands.length > 0 && !matchingChargerBrands.includes(brand);
       });
@@ -1439,7 +1506,7 @@
       });
 
       phoneCatalog.hidden = matchingProducts.length === 0;
-      noResults.style.display = visibleCount || matchingProducts.length || !chargerBrandSection.hidden ? "none" : "block";
+      noResults.style.display = visibleCount || matchingProducts.length || !chargerBrandSection.hidden || !repairDisplaySection.hidden ? "none" : "block";
     }
 
     form.addEventListener("submit", (event) => {
@@ -1447,6 +1514,7 @@
       filterCategories();
       if (!phoneCatalog.hidden) phoneCatalog.scrollIntoView({ behavior: "smooth", block: "start" });
       else if (!chargerBrandSection.hidden) chargerBrandSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      else if (!repairDisplaySection.hidden) repairDisplaySection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     searchInput.addEventListener("input", filterCategories);
@@ -1455,8 +1523,18 @@
       event.preventDefault();
       searchInput.value = "";
       chargerBrandsOpened = true;
+      repairDisplayOpened = false;
       filterCategories();
       chargerBrandSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    repairCategory.addEventListener("click", (event) => {
+      event.preventDefault();
+      searchInput.value = "";
+      repairDisplayOpened = true;
+      chargerBrandsOpened = false;
+      filterCategories();
+      repairDisplaySection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     cartToggle.addEventListener("click", () => {
