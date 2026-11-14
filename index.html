@@ -403,6 +403,19 @@
       text-align: center;
     }
 
+    .display-brand-button {
+      width: 100%;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .display-brand-button:hover,
+    .display-brand-button:focus-visible,
+    .display-brand-button[aria-expanded="true"] {
+      border-color: #b9c9f5;
+      box-shadow: 0 8px 20px rgba(26, 48, 91, .08);
+    }
+
     .no-results {
       display: none;
       padding: 24px;
@@ -1032,7 +1045,7 @@
           <h2>Smart Watches</h2>
           <p>Keep your day in sync</p>
         </a>
-        <a class="category-card" href="#repair-display-section" data-category="repairs-service" data-search="repairs service support display samsung xiaomi google pixel motorola redmi vivo oppo infinix oneplus huawei iphone itel">
+        <a class="category-card" href="#repair-display-section" data-category="repairs-service" data-search="repairs service support display samsung xiaomi google pixel motorola redmi vivo oppo infinix oneplus huawei iphone itel m02 a04 galaxy lcd screen replacement">
           <img class="category-product-image" src="assets/repair-services.webp" alt="Repair services tools">
           <h2>Repairs &amp; Service</h2>
           <p>Expert help for your device</p>
@@ -1045,7 +1058,7 @@
         </div>
         <img class="repair-display-image" src="assets/repair-display.jpg" alt="Display phone screens">
         <ul class="display-brand-grid" aria-label="Phone brands supported for display repairs">
-          <li class="display-brand-card">Samsung</li>
+          <li><button class="display-brand-card display-brand-button" type="button" data-display-brand="samsung" aria-controls="samsung-display-products" aria-expanded="false">Samsung</button></li>
           <li class="display-brand-card">Xiaomi</li>
           <li class="display-brand-card">Google Pixel</li>
           <li class="display-brand-card">Motorola</li>
@@ -1058,6 +1071,28 @@
           <li class="display-brand-card">iPhone</li>
           <li class="display-brand-card">Itel</li>
         </ul>
+        <div class="oms-product-list" id="samsung-display-products" aria-label="Samsung display products" hidden>
+          <article class="phone-product display-product" data-search="samsung galaxy m02 display lcd screen replacement" aria-labelledby="samsung-m02-display-title">
+            <img class="phone-product-image" src="assets/samsung-m02-display.jpg" alt="Samsung Galaxy M02 display assembly, front and back">
+            <div class="phone-product-details">
+              <p class="eyebrow">Samsung Display</p>
+              <h3 id="samsung-m02-display-title">Samsung Galaxy M02 Display</h3>
+              <p>Replacement display assembly</p>
+              <p class="phone-price">LKR 3,500.00</p>
+              <button class="add-to-cart" type="button" data-product-id="samsung-m02-display" data-product-name="Samsung Galaxy M02 Display" data-product-variant="Samsung Galaxy M02 display" data-price="3500">Add to cart</button>
+            </div>
+          </article>
+          <article class="phone-product display-product" data-search="samsung galaxy a04 display lcd screen replacement" aria-labelledby="samsung-a04-display-title">
+            <img class="phone-product-image" src="assets/samsung-a04-display.jpg" alt="Samsung Galaxy A04 display assembly, front and back">
+            <div class="phone-product-details">
+              <p class="eyebrow">Samsung Display</p>
+              <h3 id="samsung-a04-display-title">Samsung Galaxy A04 Display</h3>
+              <p>Replacement display assembly</p>
+              <p class="phone-price">LKR 4,000.00</p>
+              <button class="add-to-cart" type="button" data-product-id="samsung-a04-display" data-product-name="Samsung Galaxy A04 Display" data-product-variant="Samsung Galaxy A04 display" data-price="4000">Add to cart</button>
+            </div>
+          </article>
+        </div>
       </section>
       <section class="charger-brand-section" id="charger-brands" aria-labelledby="charger-brand-title" hidden>
         <div class="charger-brand-heading">
@@ -1370,8 +1405,12 @@
     const chargerCategory = categoryCards.find((card) => card.dataset.category === "chargers-power");
     const repairCategory = categoryCards.find((card) => card.dataset.category === "repairs-service");
     const repairDisplaySection = document.getElementById("repair-display-section");
+    const displayBrandButtons = Array.from(repairDisplaySection.querySelectorAll("[data-display-brand]"));
+    const samsungDisplayProductsSection = document.getElementById("samsung-display-products");
+    const samsungDisplayProducts = Array.from(samsungDisplayProductsSection.querySelectorAll(".display-product"));
     let chargerBrandsOpened = false;
     let repairDisplayOpened = false;
+    let samsungDisplaysOpened = false;
     const phoneCatalog = document.getElementById("phone-catalog");
     const phoneProducts = Array.from(phoneCatalog.querySelectorAll(".phone-product"));
     const brandCards = Array.from(document.querySelectorAll(".brand-card"));
@@ -1477,6 +1516,9 @@
         : [];
       const matchingBrands = brandCards.filter((brand) => normalizeSearch(brand.textContent).includes(normalizedQuery));
       const matchingChargerBrands = chargerBrandCards.filter((brand) => normalizeSearch(brand.dataset.search + " " + brand.textContent).includes(normalizedQuery));
+      const matchingDisplayProducts = normalizedQuery
+        ? samsungDisplayProducts.filter((product) => normalizeSearch(product.dataset.search + " " + product.textContent).includes(normalizedQuery))
+        : [];
       const isChargerSearch = !normalizedQuery || normalizeSearch(chargerCategory.textContent + " " + chargerCategory.dataset.search).includes(normalizedQuery);
       const isRepairSearch = normalizedQuery && normalizeSearch(repairCategory.textContent + " " + repairCategory.dataset.search + " " + repairDisplaySection.textContent).includes(normalizedQuery);
       const isBrandSearch = normalizedQuery.length >= 3 && matchingBrands.length === 1;
@@ -1491,6 +1533,13 @@
       const hasChargerSearch = normalizedQuery && (isChargerSearch || matchingChargerBrands.length > 0);
       chargerBrandSection.hidden = normalizedQuery ? !hasChargerSearch : !chargerBrandsOpened;
       repairDisplaySection.hidden = normalizedQuery ? !isRepairSearch : !repairDisplayOpened;
+      samsungDisplayProductsSection.hidden = normalizedQuery ? matchingDisplayProducts.length === 0 : !samsungDisplaysOpened;
+      samsungDisplayProducts.forEach((product) => {
+        product.hidden = Boolean(normalizedQuery) && !matchingDisplayProducts.includes(product);
+      });
+      displayBrandButtons.forEach((button) => {
+        button.setAttribute("aria-expanded", String(!samsungDisplayProductsSection.hidden));
+      });
       chargerBrandCards.forEach((brand) => {
         brand.hidden = Boolean(normalizedQuery) && matchingChargerBrands.length > 0 && !matchingChargerBrands.includes(brand);
       });
@@ -1532,9 +1581,22 @@
       event.preventDefault();
       searchInput.value = "";
       repairDisplayOpened = true;
+      samsungDisplaysOpened = false;
       chargerBrandsOpened = false;
       filterCategories();
       repairDisplaySection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    repairDisplaySection.addEventListener("click", (event) => {
+      const brandButton = event.target.closest("[data-display-brand]");
+      if (brandButton) {
+        samsungDisplaysOpened = !samsungDisplaysOpened;
+        filterCategories();
+        if (samsungDisplaysOpened) samsungDisplayProductsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+
+      addToCart(event);
     });
 
     cartToggle.addEventListener("click", () => {
