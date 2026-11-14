@@ -478,6 +478,15 @@
 
     .charger-brand-name { font-size: 13px; font-weight: 750; }
 
+    .oms-product-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .oms-product-list[hidden] { display: none; }
+    .oms-product-list .phone-product { margin-top: 0; }
+
     .phone-product {
       display: grid;
       grid-template-columns: minmax(0, .9fr) minmax(0, 1fr);
@@ -961,7 +970,7 @@
           <h2 id="charger-brand-title">Shop accessory brands</h2>
         </div>
         <div class="charger-brand-grid">
-          <button class="charger-brand-card charger-brand-button" type="button" data-charger-brand="oms" data-search="OMS chargers power adapters lightning cable" aria-controls="oms-lightning-product" aria-expanded="false">
+          <button class="charger-brand-card charger-brand-button" type="button" data-charger-brand="oms" data-search="OMS chargers power adapters lightning cable micro cable" aria-controls="oms-products" aria-expanded="false">
             <img class="charger-brand-logo" src="assets/oms-logo.png" alt="OMS logo">
             <span class="charger-brand-name">OMS</span>
           </button>
@@ -994,16 +1003,28 @@
             <span class="charger-brand-name">Meltubl</span>
           </article>
         </div>
-        <article class="phone-product" id="oms-lightning-product" aria-labelledby="oms-lightning-title" hidden>
-          <img class="phone-product-image" src="assets/oms-lightning.webp" alt="OMS Lightning cable with USB-A and Lightning connectors">
-          <div class="phone-product-details">
-            <p class="eyebrow">OMS Cable</p>
-            <h3 id="oms-lightning-title">OMS LIGHTNING</h3>
-            <p>Lightning charging cable</p>
-            <p class="phone-price">LKR 750.00</p>
-            <button class="add-to-cart" type="button" data-product-id="oms-lightning-cable" data-product-name="OMS LIGHTNING" data-product-variant="Lightning cable" data-price="750">Add to cart</button>
-          </div>
-        </article>
+        <div class="oms-product-list" id="oms-products" aria-label="OMS cables" hidden>
+          <article class="phone-product" id="oms-lightning-product" aria-labelledby="oms-lightning-title">
+            <img class="phone-product-image" src="assets/oms-lightning.webp" alt="OMS Lightning cable with USB-A and Lightning connectors">
+            <div class="phone-product-details">
+              <p class="eyebrow">OMS Cable</p>
+              <h3 id="oms-lightning-title">OMS LIGHTNING</h3>
+              <p>Lightning charging cable</p>
+              <p class="phone-price">LKR 750.00</p>
+              <button class="add-to-cart" type="button" data-product-id="oms-lightning-cable" data-product-name="OMS LIGHTNING" data-product-variant="Lightning cable" data-price="750">Add to cart</button>
+            </div>
+          </article>
+          <article class="phone-product" id="oms-micro-product" aria-labelledby="oms-micro-title">
+            <img class="phone-product-image" src="assets/oms-micro.jpg" alt="Micro USB cable with USB-A and Micro USB connectors">
+            <div class="phone-product-details">
+              <p class="eyebrow">OMS Cable</p>
+              <h3 id="oms-micro-title">Micro Cable</h3>
+              <p>Micro USB charging cable</p>
+              <p class="phone-price">LKR 600.00</p>
+              <button class="add-to-cart" type="button" data-product-id="oms-micro-cable" data-product-name="Micro Cable" data-product-variant="Micro USB cable" data-price="600">Add to cart</button>
+            </div>
+          </article>
+        </div>
       </section>
       <p class="no-results" id="no-results" role="status">No categories found. Try searching for phones, audio, chargers or repairs.</p>
     </section>
@@ -1197,12 +1218,12 @@
     const noResults = document.getElementById("no-results");
     const chargerBrandSection = document.getElementById("charger-brands");
     const chargerBrandCards = Array.from(document.querySelectorAll(".charger-brand-card"));
-    const omsProduct = document.getElementById("oms-lightning-product");
+    const omsProducts = document.getElementById("oms-products");
     const omsBrandButton = chargerBrandSection.querySelector("[data-charger-brand=\"oms\"]");
     const chargerCategory = categoryCards.find((card) => card.dataset.category === "chargers-power");
     let chargerBrandsOpened = false;
     const phoneCatalog = document.getElementById("phone-catalog");
-    const phoneProducts = Array.from(document.querySelectorAll(".phone-product"));
+    const phoneProducts = Array.from(phoneCatalog.querySelectorAll(".phone-product"));
     const brandCards = Array.from(document.querySelectorAll(".brand-card"));
     const cartToggle = document.getElementById("cart-toggle");
     const cartCount = document.getElementById("cart-count");
@@ -1322,7 +1343,7 @@
         brand.hidden = Boolean(normalizedQuery) && matchingChargerBrands.length > 0 && !matchingChargerBrands.includes(brand);
       });
       if (normalizedQuery && !matchingChargerBrands.includes(omsBrandButton)) {
-        omsProduct.hidden = true;
+        omsProducts.hidden = true;
         omsBrandButton.setAttribute("aria-expanded", "false");
       }
       brandCards.forEach((brand) => {
