@@ -426,6 +426,45 @@
 
     .brand-name { font-size: 14px; font-weight: 750; }
 
+    .charger-brand-section {
+      margin-top: 24px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: 0 8px 26px rgba(26, 48, 91, .05);
+    }
+
+    .charger-brand-section[hidden], .charger-brand-card[hidden] { display: none; }
+
+    .charger-brand-heading { margin-bottom: 16px; }
+    .charger-brand-heading h2 { margin: 0; font-size: 20px; }
+
+    .charger-brand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+      gap: 12px;
+    }
+
+    .charger-brand-card {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      text-align: center;
+    }
+
+    .charger-brand-logo {
+      display: block;
+      width: 100%;
+      height: 74px;
+      margin-bottom: 8px;
+      object-fit: contain;
+    }
+
+    .charger-brand-name { font-size: 13px; font-weight: 750; }
+
     .phone-product {
       display: grid;
       grid-template-columns: minmax(0, .9fr) minmax(0, 1fr);
@@ -882,7 +921,7 @@
           <h2>Cases &amp; Covers</h2>
           <p>Style meets protection</p>
         </a>
-        <a class="category-card" href="#featured" data-search="chargers cables power banks">
+        <a class="category-card" href="#charger-brands" data-category="chargers-power" data-search="chargers cables power banks OMS XO VEN-DENS ONESAM UOWU DENMEN IVON WUW">
           <img class="category-product-image" src="assets/chargers.jpg" alt="Phone charger and cable">
           <h2>Chargers &amp; Power</h2>
           <p>Stay powered all day</p>
@@ -903,6 +942,46 @@
           <p>Expert help for your device</p>
         </a>
       </div>
+      <section class="charger-brand-section" id="charger-brands" aria-labelledby="charger-brand-title">
+        <div class="charger-brand-heading">
+          <p class="eyebrow">Chargers &amp; Power</p>
+          <h2 id="charger-brand-title">Shop accessory brands</h2>
+        </div>
+        <div class="charger-brand-grid">
+          <article class="charger-brand-card" data-search="OMS chargers power adapters">
+            <img class="charger-brand-logo" src="assets/oms-logo.png" alt="OMS logo">
+            <span class="charger-brand-name">OMS</span>
+          </article>
+          <article class="charger-brand-card" data-search="XO chargers power adapters">
+            <img class="charger-brand-logo" src="assets/pco-logo.png" alt="XO logo">
+            <span class="charger-brand-name">XO</span>
+          </article>
+          <article class="charger-brand-card" data-search="VEN-DENS vendens chargers power adapters">
+            <img class="charger-brand-logo" src="assets/vendens-logo.png" alt="VEN-DENS logo">
+            <span class="charger-brand-name">VEN-DENS</span>
+          </article>
+          <article class="charger-brand-card" data-search="ONESAM chargers power adapters">
+            <img class="charger-brand-logo" src="assets/onesam-logo.png" alt="ONESAM logo">
+            <span class="charger-brand-name">ONESAM</span>
+          </article>
+          <article class="charger-brand-card" data-search="UOWU chargers power adapters">
+            <img class="charger-brand-logo" src="assets/uowu-logo.jpg" alt="UOWU logo">
+            <span class="charger-brand-name">UOWU</span>
+          </article>
+          <article class="charger-brand-card" data-search="DENMEN chargers power adapters">
+            <img class="charger-brand-logo" src="assets/denmen-logo.jpg" alt="DENMEN logo">
+            <span class="charger-brand-name">DENMEN</span>
+          </article>
+          <article class="charger-brand-card" data-search="IVON chargers power adapters">
+            <img class="charger-brand-logo" src="assets/ivon-logo.png" alt="IVON logo">
+            <span class="charger-brand-name">IVON</span>
+          </article>
+          <article class="charger-brand-card" data-search="WUW chargers power adapters">
+            <img class="charger-brand-logo" src="assets/meltubl-logo.png" alt="WUW logo">
+            <span class="charger-brand-name">WUW</span>
+          </article>
+        </div>
+      </section>
       <p class="no-results" id="no-results" role="status">No categories found. Try searching for phones, audio, chargers or repairs.</p>
     </section>
 
@@ -1093,6 +1172,8 @@
     const searchInput = document.getElementById("category-search");
     const categoryCards = Array.from(document.querySelectorAll(".category-card"));
     const noResults = document.getElementById("no-results");
+    const chargerBrandSection = document.getElementById("charger-brands");
+    const chargerBrandCards = Array.from(document.querySelectorAll(".charger-brand-card"));
     const phoneCatalog = document.getElementById("phone-catalog");
     const phoneProducts = Array.from(document.querySelectorAll(".phone-product"));
     const brandCards = Array.from(document.querySelectorAll(".brand-card"));
@@ -1197,15 +1278,22 @@
         ? phoneProducts.filter((product) => normalizeSearch(product.dataset.search + " " + product.textContent).includes(normalizedQuery))
         : [];
       const matchingBrands = brandCards.filter((brand) => normalizeSearch(brand.textContent).includes(normalizedQuery));
+      const matchingChargerBrands = chargerBrandCards.filter((brand) => normalizeSearch(brand.dataset.search + " " + brand.textContent).includes(normalizedQuery));
+      const chargerCategory = categoryCards.find((card) => card.dataset.category === "chargers-power");
+      const isChargerSearch = !normalizedQuery || normalizeSearch(chargerCategory.textContent + " " + chargerCategory.dataset.search).includes(normalizedQuery);
       const isBrandSearch = normalizedQuery.length >= 3 && matchingBrands.length === 1;
       let visibleCount = 0;
 
       categoryCards.forEach((card) => {
-        const matches = !query || (card.textContent + " " + card.dataset.search).toLowerCase().includes(query);
+        const matches = !normalizedQuery || normalizeSearch(card.textContent + " " + card.dataset.search).includes(normalizedQuery);
         card.hidden = !matches;
         if (matches) visibleCount += 1;
       });
 
+      chargerBrandSection.hidden = Boolean(normalizedQuery) && !isChargerSearch && matchingChargerBrands.length === 0;
+      chargerBrandCards.forEach((brand) => {
+        brand.hidden = Boolean(normalizedQuery) && matchingChargerBrands.length > 0 && !matchingChargerBrands.includes(brand);
+      });
       brandCards.forEach((brand) => {
         brand.hidden = isBrandSearch && brand !== matchingBrands[0];
       });
@@ -1214,13 +1302,14 @@
       });
 
       phoneCatalog.hidden = matchingProducts.length === 0;
-      noResults.style.display = visibleCount || matchingProducts.length ? "none" : "block";
+      noResults.style.display = visibleCount || matchingProducts.length || !chargerBrandSection.hidden ? "none" : "block";
     }
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       filterCategories();
       if (!phoneCatalog.hidden) phoneCatalog.scrollIntoView({ behavior: "smooth", block: "start" });
+      else if (!chargerBrandSection.hidden) chargerBrandSection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     searchInput.addEventListener("input", filterCategories);
