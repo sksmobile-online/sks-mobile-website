@@ -1459,8 +1459,6 @@
     const promoIndicators = Array.from(carousel.querySelectorAll(".promo-indicator"));
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let activePromo = 0;
-    let isHovered = false;
-    let hasFocus = false;
     let autoplayTimer;
 
     function formatCurrency(amount) {
@@ -1805,7 +1803,7 @@
 
     function startPromoAutoplay() {
       window.clearInterval(autoplayTimer);
-      if (prefersReducedMotion || isHovered || hasFocus || document.hidden) return;
+      if (prefersReducedMotion || document.hidden) return;
       autoplayTimer = window.setInterval(() => showPromo(activePromo + 1), 5000);
     }
 
@@ -1819,28 +1817,6 @@
         showPromo(Number(control.dataset.slide));
       }
       startPromoAutoplay();
-    });
-
-    carousel.addEventListener("mouseenter", () => {
-      isHovered = true;
-      startPromoAutoplay();
-    });
-
-    carousel.addEventListener("mouseleave", () => {
-      isHovered = false;
-      startPromoAutoplay();
-    });
-
-    carousel.addEventListener("focusin", () => {
-      hasFocus = true;
-      startPromoAutoplay();
-    });
-
-    carousel.addEventListener("focusout", (event) => {
-      if (!carousel.contains(event.relatedTarget)) {
-        hasFocus = false;
-        startPromoAutoplay();
-      }
     });
 
     document.addEventListener("visibilitychange", startPromoAutoplay);
