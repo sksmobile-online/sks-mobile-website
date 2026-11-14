@@ -942,7 +942,7 @@
           <p>Expert help for your device</p>
         </a>
       </div>
-      <section class="charger-brand-section" id="charger-brands" aria-labelledby="charger-brand-title">
+      <section class="charger-brand-section" id="charger-brands" aria-labelledby="charger-brand-title" hidden>
         <div class="charger-brand-heading">
           <p class="eyebrow">Chargers &amp; Power</p>
           <h2 id="charger-brand-title">Shop accessory brands</h2>
@@ -1174,6 +1174,8 @@
     const noResults = document.getElementById("no-results");
     const chargerBrandSection = document.getElementById("charger-brands");
     const chargerBrandCards = Array.from(document.querySelectorAll(".charger-brand-card"));
+    const chargerCategory = categoryCards.find((card) => card.dataset.category === "chargers-power");
+    let chargerBrandsOpened = false;
     const phoneCatalog = document.getElementById("phone-catalog");
     const phoneProducts = Array.from(document.querySelectorAll(".phone-product"));
     const brandCards = Array.from(document.querySelectorAll(".brand-card"));
@@ -1279,7 +1281,6 @@
         : [];
       const matchingBrands = brandCards.filter((brand) => normalizeSearch(brand.textContent).includes(normalizedQuery));
       const matchingChargerBrands = chargerBrandCards.filter((brand) => normalizeSearch(brand.dataset.search + " " + brand.textContent).includes(normalizedQuery));
-      const chargerCategory = categoryCards.find((card) => card.dataset.category === "chargers-power");
       const isChargerSearch = !normalizedQuery || normalizeSearch(chargerCategory.textContent + " " + chargerCategory.dataset.search).includes(normalizedQuery);
       const isBrandSearch = normalizedQuery.length >= 3 && matchingBrands.length === 1;
       let visibleCount = 0;
@@ -1290,7 +1291,8 @@
         if (matches) visibleCount += 1;
       });
 
-      chargerBrandSection.hidden = Boolean(normalizedQuery) && !isChargerSearch && matchingChargerBrands.length === 0;
+      const hasChargerSearch = normalizedQuery && (isChargerSearch || matchingChargerBrands.length > 0);
+      chargerBrandSection.hidden = normalizedQuery ? !hasChargerSearch : !chargerBrandsOpened;
       chargerBrandCards.forEach((brand) => {
         brand.hidden = Boolean(normalizedQuery) && matchingChargerBrands.length > 0 && !matchingChargerBrands.includes(brand);
       });
@@ -1313,6 +1315,14 @@
     });
 
     searchInput.addEventListener("input", filterCategories);
+
+    chargerCategory.addEventListener("click", (event) => {
+      event.preventDefault();
+      searchInput.value = "";
+      chargerBrandsOpened = true;
+      filterCategories();
+      chargerBrandSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
 
     cartToggle.addEventListener("click", () => {
       shoppingCart.hidden = !shoppingCart.hidden;
