@@ -435,7 +435,7 @@
       box-shadow: 0 8px 26px rgba(26, 48, 91, .05);
     }
 
-    .charger-brand-section[hidden], .charger-brand-card[hidden] { display: none; }
+    .charger-brand-section[hidden], .charger-brand-card[hidden], .phone-product[hidden] { display: none; }
 
     .charger-brand-heading { margin-bottom: 16px; }
     .charger-brand-heading h2 { margin: 0; font-size: 20px; }
@@ -453,6 +453,19 @@
       border-radius: 14px;
       background: #fff;
       text-align: center;
+    }
+
+    .charger-brand-button {
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .charger-brand-button:hover,
+    .charger-brand-button:focus-visible,
+    .charger-brand-button[aria-expanded="true"] {
+      border-color: #b9c9f5;
+      box-shadow: 0 8px 20px rgba(26, 48, 91, .08);
     }
 
     .charger-brand-logo {
@@ -948,10 +961,10 @@
           <h2 id="charger-brand-title">Shop accessory brands</h2>
         </div>
         <div class="charger-brand-grid">
-          <article class="charger-brand-card" data-search="OMS chargers power adapters">
+          <button class="charger-brand-card charger-brand-button" type="button" data-charger-brand="oms" data-search="OMS chargers power adapters lightning cable" aria-controls="oms-lightning-product" aria-expanded="false">
             <img class="charger-brand-logo" src="assets/oms-logo.png" alt="OMS logo">
             <span class="charger-brand-name">OMS</span>
-          </article>
+          </button>
           <article class="charger-brand-card" data-search="XO chargers power adapters">
             <img class="charger-brand-logo" src="assets/pco-logo.png" alt="XO logo">
             <span class="charger-brand-name">XO</span>
@@ -981,6 +994,16 @@
             <span class="charger-brand-name">Meltubl</span>
           </article>
         </div>
+        <article class="phone-product" id="oms-lightning-product" aria-labelledby="oms-lightning-title" hidden>
+          <img class="phone-product-image" src="assets/oms-lightning.webp" alt="OMS Lightning cable with USB-A and Lightning connectors">
+          <div class="phone-product-details">
+            <p class="eyebrow">OMS Cable</p>
+            <h3 id="oms-lightning-title">OMS LIGHTNING</h3>
+            <p>Lightning charging cable</p>
+            <p class="phone-price">LKR 750.00</p>
+            <button class="add-to-cart" type="button" data-product-id="oms-lightning-cable" data-product-name="OMS LIGHTNING" data-product-variant="Lightning cable" data-price="750">Add to cart</button>
+          </div>
+        </article>
       </section>
       <p class="no-results" id="no-results" role="status">No categories found. Try searching for phones, audio, chargers or repairs.</p>
     </section>
@@ -1098,7 +1121,7 @@
         </div>
         <button class="cart-clear" id="cart-clear" type="button" hidden>Clear cart</button>
       </div>
-      <p class="cart-empty" id="cart-empty">Your cart is empty. Add a phone to start an order.</p>
+      <p class="cart-empty" id="cart-empty">Your cart is empty. Add an item to start an order.</p>
       <ul class="cart-items" id="cart-items" aria-live="polite"></ul>
       <div class="cart-totals" id="cart-totals" hidden>
         <div><span>Items subtotal</span><strong id="cart-subtotal">LKR 0.00</strong></div>
@@ -1174,6 +1197,8 @@
     const noResults = document.getElementById("no-results");
     const chargerBrandSection = document.getElementById("charger-brands");
     const chargerBrandCards = Array.from(document.querySelectorAll(".charger-brand-card"));
+    const omsProduct = document.getElementById("oms-lightning-product");
+    const omsBrandButton = chargerBrandSection.querySelector("[data-charger-brand=\"oms\"]");
     const chargerCategory = categoryCards.find((card) => card.dataset.category === "chargers-power");
     let chargerBrandsOpened = false;
     const phoneCatalog = document.getElementById("phone-catalog");
@@ -1296,6 +1321,10 @@
       chargerBrandCards.forEach((brand) => {
         brand.hidden = Boolean(normalizedQuery) && matchingChargerBrands.length > 0 && !matchingChargerBrands.includes(brand);
       });
+      if (normalizedQuery && !matchingChargerBrands.includes(omsBrandButton)) {
+        omsProduct.hidden = true;
+        omsBrandButton.setAttribute("aria-expanded", "false");
+      }
       brandCards.forEach((brand) => {
         brand.hidden = isBrandSearch && brand !== matchingBrands[0];
       });
@@ -1333,15 +1362,15 @@
       }
     });
 
-    phoneCatalog.addEventListener("click", (event) => {
+    function addToCart(event) {
       const button = event.target.closest(".add-to-cart");
-      if (!button) return;
+      if (!button) return false;
 
       const { productId, productName, productVariant } = button.dataset;
       const productPrice = Number(button.dataset.price);
       if (!productId || !productName || !productVariant || !Number.isFinite(productPrice) || productPrice < 0) {
         cartStatus.textContent = "This item could not be added. Please try again.";
-        return;
+        return true;
       }
 
       const existingItem = cartItems.find((item) => item.id === productId);
@@ -1357,6 +1386,23 @@
       cartToggle.setAttribute("aria-expanded", "true");
       renderCart();
       shoppingCart.scrollIntoView({ behavior: "smooth", block: "start" });
+      return true;
+    }
+
+    phoneCatalog.addEventListener("click", addToCart);
+
+    chargerBrandSection.addEventListener("click", (event) => {
+      const brandButton = event.target.closest("[data-charger-brand]");
+      if (brandButton) {
+        const product = document.getElementById(brandButton.getAttribute("aria-controls"));
+        const isOpening = product.hidden;
+        product.hidden = !isOpening;
+        brandButton.setAttribute("aria-expanded", String(isOpening));
+        if (isOpening) product.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+
+      addToCart(event);
     });
 
     cartItemsList.addEventListener("click", (event) => {
@@ -1397,7 +1443,7 @@
     checkoutForm.addEventListener("submit", (event) => {
       event.preventDefault();
       if (!cartItems.length) {
-        cartStatus.textContent = "Your cart is empty. Add a phone before placing an order.";
+        cartStatus.textContent = "Your cart is empty. Add an item before placing an order.";
         return;
       }
 
